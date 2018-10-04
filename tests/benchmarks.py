@@ -503,9 +503,6 @@ def test_10DataStream_fixedSmallWindow():
 
 @test(TEMPORAL_FILTER)
 def test_10DataStream_fixedLargeWindow():
-    """
-    EXPECTED BEHAVIOR: MedianHeap runs decreasingly faster than numpy.median as scan_count grows larger.
-    """
     ### SETUP ###
     ITERATIONS = [10**x for x in range(1,6)]
     SCAN_SIZE = 10
@@ -515,9 +512,6 @@ def test_10DataStream_fixedLargeWindow():
 
 @test(TEMPORAL_FILTER)
 def test_1DataStream_fixedLargeWindow():
-    """
-    EXPECTED BEHAVIOR: MedianHeap runs increasingly slower than numpy.median as scan_count grows larger.
-    """
 
     ### SETUP ###
     ITERATIONS = [10**x for x in range(1,6)]

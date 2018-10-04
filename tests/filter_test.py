@@ -9,9 +9,6 @@ import numpy as np
 import random
 import timeit
 
-import os
-import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from filter import RangeFilter, TemporalMedianFilter
 
