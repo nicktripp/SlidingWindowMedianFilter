@@ -22,27 +22,27 @@ class TestTemporalMedianFilter:
         """ Tests filter initalization with an invalid parameters. """
         # Invalid window size
         with pytest.raises(ValueError):
-            filter = TemporalMedianFilter(-10,1)
+            med_filter= TemporalMedianFilter(-10,1)
 
         # Invalid scan_size
         with pytest.raises(ValueError):
-            filter = TemporalMedianFilter(1,0)
+            med_filter= TemporalMedianFilter(1,0)
 
         # Invalid filter type
         with pytest.raises(ValueError):
-            filter = TemporalMedianFilter(1,1,type="NotAType")
+            med_filter= TemporalMedianFilter(1,1,f_type="NotAType")
 
     def test_invalid_scan_size(self):
         """ Tests calling update on a scan that is a different size than scan_size. """
         SCAN_SIZE = 10
         SCAN = range(60)
 
-        filter = TemporalMedianFilter(3,SCAN_SIZE)
+        med_filter= TemporalMedianFilter(3,SCAN_SIZE)
 
 
         assert SCAN_SIZE != len(SCAN)
         with pytest.raises(ValueError):
-            filter.update(SCAN)
+            med_filter.update(SCAN)
 
     def test_heap_update(self):
         """
@@ -67,10 +67,10 @@ class TestTemporalMedianFilter:
         ]
 
 
-        filter = TemporalMedianFilter(3, 5, type=TemporalMedianFilter.TYPE_HEAP)
+        med_filter= TemporalMedianFilter(3, 5, f_type=TemporalMedianFilter.TYPE_HEAP)
 
         for (scan, expected_median) in zip(scans, expected_median):
-            np.testing.assert_array_almost_equal(filter.update(scan), expected_median)
+            np.testing.assert_array_almost_equal(med_filter.update(scan), expected_median)
 
     def test_numpy_update(self):
         """
@@ -95,10 +95,10 @@ class TestTemporalMedianFilter:
         ]
 
 
-        filter = TemporalMedianFilter(3, 5, type=TemporalMedianFilter.TYPE_NUMPY)
+        med_filter= TemporalMedianFilter(3, 5, f_type=TemporalMedianFilter.TYPE_NUMPY)
 
         for (scan, expected_median) in zip(scans, expected_median):
-            np.testing.assert_array_almost_equal(filter.update(scan), expected_median)
+            np.testing.assert_array_almost_equal(med_filter.update(scan), expected_median)
 
 
 
@@ -108,12 +108,12 @@ class TestRangeFilter:
     def test_init_no_min_or_max(self):
         """ Tests creation of a RangeFilter without a specified maximum or minimum. """
         with pytest.raises(ValueError):
-            filter = RangeFilter()
+            r_filter= RangeFilter()
 
     def test_init_larger_min(self):
         """ Tests creation of a RangeFilter with a larger minimum than maximum. """
         with pytest.raises(ValueError):
-            filter = RangeFilter(min=10,max=9.9999)
+            r_filter= RangeFilter(minimum=10,maximum=9.9999)
 
 
     def test_max(self):
@@ -122,7 +122,7 @@ class TestRangeFilter:
         simple_scan         = np.array([8.50, 31.48, 38.83, 12.58, 44.69, 18.79, 23.55, 29.054, 48.71, 39.947])
         expected_filtered   = np.array([8.50, 31.48, MAX,   12.58, MAX,   18.79, 23.55, 29.054, MAX,   MAX])
 
-        max_filter      = RangeFilter(max=MAX)
+        max_filter      = RangeFilter(maximum=MAX)
 
         np.testing.assert_array_almost_equal(max_filter.update(simple_scan), expected_filtered)
 
@@ -132,7 +132,7 @@ class TestRangeFilter:
         simple_scan         = np.array([8.50, 31.48, 38.83, 12.58, 44.69, 18.79, 23.55, 29.054, 48.71, 39.947])
         expected_filtered   = np.array([MIN,  31.48, 38.83, MIN,   44.69, MIN,   23.55, 29.054, 48.71, 39.947])
 
-        min_filter      = RangeFilter(min=MIN)
+        min_filter      = RangeFilter(minimum=MIN)
 
         np.testing.assert_array_almost_equal(min_filter.update(simple_scan), expected_filtered)
 
@@ -143,6 +143,6 @@ class TestRangeFilter:
         simple_scan         = np.array([8.50, 31.48, 38.83, 12.58, 44.69, 18.79, 23.55, 29.054, 48.71, 39.947])
         expected_filtered   = np.array([MIN,  31.48, MAX,   MIN,   MAX,   MIN,   23.55, 29.054, MAX,   MAX])
 
-        max_min_filter  = RangeFilter(max=35.8, min=20)
+        max_min_filter  = RangeFilter(maximum=35.8, minimum=20)
 
         np.testing.assert_array_almost_equal(max_min_filter.update(simple_scan), expected_filtered)

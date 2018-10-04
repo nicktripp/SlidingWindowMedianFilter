@@ -80,8 +80,8 @@ class color:
 def print_header():
     """ Prints a header for this benchmark testing session. """
     rows, columns = os.popen('stty size', 'r').read().split()
-    str=color.BOLD + "{:=^" + columns + "}" + color.END
-    print(str.format(" Running Benchmark Test Suites "))
+    head_str=color.BOLD + "{:=^" + columns + "}" + color.END
+    print(head_str.format(" Running Benchmark Test Suites "))
 
 def print_footer(tests_run, time_eleapsed):
     """
@@ -94,8 +94,8 @@ def print_footer(tests_run, time_eleapsed):
     :time_elapsed - the total amount of elapsed time, in seconds, to print.
     """
     rows, columns = os.popen('stty size', 'r').read().split()
-    str=color.BOLD + color.GREEN + "{:=^" + columns + "}" + color.END
-    print(str.format(" {} Tests Run, {} seconds elapsed ".format(tests_run, time_eleapsed)))
+    head_str=color.BOLD + color.GREEN + "{:=^" + columns + "}" + color.END
+    print(head_str.format(" {} Tests Run, {} seconds elapsed ".format(tests_run, time_eleapsed)))
 
 def run_suite(suite_name):
     """
@@ -110,11 +110,10 @@ def run_suite(suite_name):
         raise ValueError("Suite '{}' does not exist".format(suite_name))
 
     rows, columns = os.popen('stty size', 'r').read().split()
-    str=color.PURPLE + "{:=^" + columns + "}" + color.END
-    print(str.format(" Bench-Test Suite: {} ".format(suite_name)))
+    head_str=color.PURPLE + "{:=^" + columns + "}" + color.END
+    print(head_str.format(" Bench-Test Suite: {} ".format(suite_name)))
     if (suite_name in suite_descriptions):
         print(suite_descriptions[suite_name])
-        # str="{:.^" + columns + "}"
 
     TESTS = suites[suite_name]
 
@@ -122,8 +121,8 @@ def run_suite(suite_name):
         print_bench_test(test)
 
     tests_count = len(TESTS)
-    str= color.PURPLE + "{:-^" + columns + "}" + color.END
-    print(str.format(" {}: {} Tests Run ".format(suite_name, tests_count)))
+    head_str= color.PURPLE + "{:-^" + columns + "}" + color.END
+    print(head_str.format(" {}: {} Tests Run ".format(suite_name, tests_count)))
     return tests_count
 
 ###
@@ -140,15 +139,15 @@ def print_bench_test(func):
     """
     rows, columns = os.popen('stty size', 'r').read().split()
 
-    str="{:_^" + columns + "}"
-    print(str.format(" {} ".format(func.__name__)))
+    head_str="{:_^" + columns + "}"
+    print(head_str.format(" {} ".format(func.__name__)))
     if (func.__doc__ is not None):
         print(func.__doc__)
-        str="{:.^" + columns + "}"
-    print(str.format("") + "\n")
+        head_str="{:.^" + columns + "}"
+    print(head_str.format("") + "\n")
     func()
-    str="{:.^" + columns + "}"
-    print("\n" + str.format("") + "\n")
+    head_str="{:.^" + columns + "}"
+    print("\n" + head_str.format("") + "\n")
 
 
 ##############################################################
@@ -248,7 +247,7 @@ import numpy as np
 import random
 from filter import TemporalMedianFilter
 
-filter = TemporalMedianFilter(window={WINDOW}, scan_size={SCAN_SIZE}, type="{TYPE}")
+filter = TemporalMedianFilter(window={WINDOW}, scan_size={SCAN_SIZE}, f_type="{TYPE}")
 
 random.seed({SEED})
         """

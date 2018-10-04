@@ -17,23 +17,23 @@ class RangeFilter:
 
     The update function returns an array with each entry cropped by a specified min or max.
     """
-    def __init__(self, min=None, max=None):
+    def __init__(self, minimum=None, maximum=None):
         """
         Creates a new RangeFilter with the given specs.
 
-        min or max can be None, but not both.
+        minimum or maximum can be None, but not both.
 
         Params:
-        :min = a minimum value, below which data will be cropped up to.
-        :max = a maximum value, above which data will be cropped down to.
+        :minimum = a minimum value, below which data will be cropped up to.
+        :maximum = a maximum value, above which data will be cropped down to.
         """
-        if (min and max and min > max):
-            raise ValueError("RangeFilter: min must be lower than max")
+        if (minimum and maximum and minimum > maximum):
+            raise ValueError("RangeFilter: minimum must be lower than maximum")
 
-        if (not max and not min):
-            raise ValueError("RangeFilter: must set either max or min")
-        self.min = min
-        self.max = max
+        if (not maximum and not minimum):
+            raise ValueError("RangeFilter: must set either maximum or minimum")
+        self.min = minimum
+        self.max = maximum
 
     def update(self, scan):
         """
@@ -66,14 +66,14 @@ class TemporalMedianFilter:
     TYPE_NUMPY = "TYPE_NUMPY"
     TYPES = {TYPE_HEAP, TYPE_NUMPY}
 
-    def __init__(self, window, scan_size, type=TYPE_HEAP):
+    def __init__(self, window, scan_size, f_type=TYPE_HEAP):
         """
         Creates a new Median Filter with the given specs.
 
         Params:
         :window - the filter's window size. After 'window' number of calls to the update function,
         :scan_size - the fixed width of each scan of the input stream
-        :type - either 'TYPE_HEAP' or 'TYPE_NUMPY', indicating this filter uses a median heap or numpy.median, respectively.
+        :f_type - either 'TYPE_HEAP' or 'TYPE_NUMPY', indicating this filter uses a median heap or numpy.median, respectively.
         """
         self.scans = None
 
@@ -85,9 +85,9 @@ class TemporalMedianFilter:
             raise ValueError("TemporalMedianFilter: scan_size must be > 0")
         self.scan_size = scan_size
 
-        if type not in TemporalMedianFilter.TYPES:
-            raise ValueError("TemporalMedianFilter: type must be valid type")
-        self.type= type
+        if f_type not in TemporalMedianFilter.TYPES:
+            raise ValueError("TemporalMedianFilter: f_type must be valid type")
+        self.type= f_type
 
         self.med_heaps = [MedianHeap() for i in range(scan_size)]
 

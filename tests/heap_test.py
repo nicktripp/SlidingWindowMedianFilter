@@ -5,8 +5,6 @@
 """
 
 import numpy as np
-import timeit
-import pdb
 import pytest
 
 import os
